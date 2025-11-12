@@ -1,0 +1,154 @@
+<div class="user-management-container">
+  <header class="header">
+    <div class="header-content">
+      <h1>User Management</h1>
+      <div class="header-actions">
+        <button class="back-btn" (click)="goBack()">← Back to Dashboard</button>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <div class="actions-bar">
+      <button class="add-btn" (click)="toggleAddForm()">
+        @if (showAddForm) {
+          <span>✕ Cancel</span>
+        } @else {
+          <span>+ Add New User</span>
+        }
+      </button>
+    </div>
+
+    @if (showAddForm) {
+      <div class="form-card">
+        <h3>Add New User</h3>
+        <form (ngSubmit)="addUser()">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                [(ngModel)]="newUser.username"
+                name="username"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                [(ngModel)]="newUser.email"
+                name="email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input
+                type="text"
+                id="fullName"
+                [(ngModel)]="newUser.fullName"
+                name="fullName"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="role">Role</label>
+              <select id="role" [(ngModel)]="newUser.role" name="role">
+                <option value="user">User</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" [disabled]="loading">Add User</button>
+        </form>
+      </div>
+    }
+
+    <div class="users-table">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Full Name</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user.id) {
+            @if (editingUser && editingUser.id === user.id) {
+              <tr class="editing-row">
+                <td>{{ user.id }}</td>
+                <td>
+                  <input type="text" [(ngModel)]="editingUser.username" />
+                </td>
+                <td>
+                  <input type="email" [(ngModel)]="editingUser.email" />
+                </td>
+                <td>
+                  <input type="text" [(ngModel)]="editingUser.fullName" />
+                </td>
+                <td>
+                  <select [(ngModel)]="editingUser.role">
+                    <option value="user">User</option>
+                    <option value="manager">Manager</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </td>
+                <td>
+                  <button class="save-btn" (click)="updateUser()">Save</button>
+                  <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+                </td>
+              </tr>
+            } @else {
+              <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.fullName }}</td>
+                <td>
+                  <span class="role-badge" [class]="'role-' + user.role">
+                    {{ user.role }}
+                  </span>
+                </td>
+                <td>
+                  <button class="edit-btn" (click)="editUser(user)">Edit</button>
+                  <button class="delete-btn" (click)="deleteUser(user.id)">Delete</button>
+                </td>
+              </tr>
+            }
+          } @empty {
+            <tr>
+              <td colspan="6" class="empty-message">No users found</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (loading) {
+      <div class="loading-overlay">
+        <div class="spinner"></div>
+      </div>
+    }
+  </main>
+</div>

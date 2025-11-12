@@ -1,10 +1,62 @@
 # DWEC2526PrimerProgramaAngular
 
-Exemple de primer codi fet amb Angular que mostra "Hola Món".
+Exemple d'aplicació Angular amb sistema complet d'autenticació i autorització utilitzant JWT.
 
 ## Descripció del Projecte
 
-Aquest és un projecte d'exemple que demostra com crear una aplicació Angular bàsica que mostra el missatge "Hola Món" a la pantalla. És ideal per a principiants que volen aprendre els fonaments d'Angular.
+Aquest projecte és una aplicació Angular que implementa un sistema d'autenticació i autorització basat en JWT (JSON Web Tokens). Inclou funcionalitats de login, dashboard, gestió d'usuaris i control d'accés basat en rols.
+
+## Funcionalitats Principals
+
+### 🔐 Autenticació JWT
+- Sistema de login amb usuari i contrasenya
+- Tokens JWT per a l'autenticació
+- Emmagatzematge segur de tokens
+- Expiració automàtica de sessions
+
+### 👥 Gestió d'Usuaris
+- Llistat d'usuaris
+- Crear nous usuaris
+- Editar usuaris existents
+- Eliminar usuaris
+- Accés restringit per rols (Admin i Manager)
+
+### 🛡️ Autorització per Rols
+- **Admin**: Accés complet al sistema
+- **Manager**: Accés a la gestió d'usuaris
+- **User**: Accés bàsic al dashboard
+
+### 🎨 Interfície Moderna
+- Disseny responsiu
+- Gradients moderns
+- Formularis intuïtius
+- Feedback visual
+
+## Comptes de Prova
+
+| Usuari   | Contrasenya | Rol     | Nivell d'Accés              |
+|----------|-------------|---------|------------------------------|
+| admin    | admin123    | admin   | Accés complet                |
+| manager  | manager123  | manager | Gestió d'usuaris             |
+| user     | user123     | user    | Accés bàsic                  |
+
+## Captures de Pantalla
+
+### Pàgina de Login
+![Login Page](https://github.com/user-attachments/assets/3b40ba8a-47e2-4518-bea9-7a72dcc2ba0c)
+
+### Dashboard - Administrador
+![Dashboard Admin](https://github.com/user-attachments/assets/0103debd-9159-43d9-9cc7-fc61fe380a9d)
+
+### Dashboard - Usuari Regular
+![Dashboard User](https://github.com/user-attachments/assets/541efc6c-3a82-45cf-a5fe-72dbef5eb50e)
+
+### Gestió d'Usuaris
+![User Management](https://github.com/user-attachments/assets/462ef3a1-d6cd-4e12-ad28-93f062c8ffbc)
+
+## Descripció del Projecte Original
+
+Aquest projecte va començar com un exemple bàsic d'Angular que mostra "Hola Món" i s'ha ampliat per incloure funcionalitats avançades d'autenticació i autorització.
 
 ## Què és Angular?
 
@@ -15,27 +67,129 @@ Angular és un framework de desenvolupament web creat i mantingut per Google. Pe
 - **Dependency Injection**: Sistema per gestionar dependències de forma eficient
 - **Routing**: Navegació entre diferents vistes de l'aplicació
 
-## Estructura del Projecte
+
+## Arquitectura del Projecte
+
+### Estructura de Directoris
 
 ```
 DWEC2526PrimerProgramaAngular/
 ├── src/
 │   ├── app/
-│   │   ├── app.ts          # Component principal de l'aplicació
-│   │   ├── app.html        # Template HTML del component
-│   │   ├── app.css         # Estils del component
-│   │   ├── app.config.ts   # Configuració de l'aplicació
-│   │   └── app.spec.ts     # Tests del component
-│   ├── index.html          # Pàgina HTML principal
-│   ├── main.ts             # Punt d'entrada de l'aplicació
-│   └── styles.css          # Estils globals
-├── public/                 # Recursos estàtics (favicon, etc.)
-├── angular.json            # Configuració d'Angular
-├── package.json            # Dependències del projecte
-└── tsconfig.json           # Configuració de TypeScript
+│   │   ├── components/              # Components de la UI
+│   │   │   ├── login/               # Component de login
+│   │   │   ├── dashboard/           # Dashboard principal
+│   │   │   └── user-management/     # Gestió d'usuaris
+│   │   ├── services/                # Serveis d'aplicació
+│   │   │   ├── auth.service.ts      # Servei d'autenticació
+│   │   │   ├── user.service.ts      # Servei de gestió d'usuaris
+│   │   │   └── mock-backend.service.ts # API simulada
+│   │   ├── guards/                  # Guards de rutes
+│   │   │   └── auth.guard.ts        # Guards d'autenticació i rols
+│   │   ├── interceptors/            # HTTP Interceptors
+│   │   │   └── jwt.interceptor.ts   # Interceptor JWT
+│   │   ├── models/                  # Models de dades
+│   │   │   └── user.model.ts        # Model d'usuari
+│   │   ├── app.routes.ts            # Configuració de rutes
+│   │   ├── app.config.ts            # Configuració de l'aplicació
+│   │   ├── app.ts                   # Component principal
+│   │   ├── app.html                 # Template principal
+│   │   └── app.spec.ts              # Tests
+│   ├── index.html                   # Pàgina HTML principal
+│   ├── main.ts                      # Punt d'entrada
+│   └── styles.css                   # Estils globals
+├── AUTHENTICATION.md                # Documentació d'autenticació
+├── angular.json                     # Configuració d'Angular
+├── package.json                     # Dependències del projecte
+└── tsconfig.json                    # Configuració de TypeScript
 ```
 
-## Components Principals
+### Components Principals
+
+#### LoginComponent
+Component per a l'autenticació d'usuaris amb formulari de login.
+
+#### DashboardComponent
+Dashboard principal amb informació específica segons el rol de l'usuari.
+
+#### UserManagementComponent
+Gestió completa d'usuaris amb operacions CRUD (només Admin i Manager).
+
+### Serveis
+
+#### AuthService
+- Gestió de l'autenticació
+- Emmagatzematge i validació de tokens JWT
+- Verificació de rols i permisos
+
+#### UserService
+- Operacions CRUD sobre usuaris
+- Integració amb el backend
+
+#### MockBackendService
+- Simula una API REST
+- Genera tokens JWT
+- Gestiona dades d'usuaris en memòria
+
+### Guards
+
+#### authGuard
+Protegeix rutes que requereixen autenticació.
+
+#### roleGuard
+Protegeix rutes que requereixen rols específics.
+
+### Interceptors
+
+#### jwtInterceptor
+Afegeix automàticament el token JWT a les peticions HTTP.
+
+
+## Com Utilitzar l'Aplicació
+
+### 1. Accedir al Login
+Obre l'aplicació al navegador. Seràs redirigit automàticament a la pàgina de login.
+
+### 2. Iniciar Sessió
+Utilitza un dels comptes de prova:
+- **Admin**: `admin` / `admin123`
+- **Manager**: `manager` / `manager123`
+- **User**: `user` / `user123`
+
+### 3. Navegar pel Dashboard
+Després del login, accediràs al dashboard on podràs:
+- Veure la teva informació de perfil
+- Accedir a la gestió d'usuaris (si ets Admin o Manager)
+- Veure les funcionalitats disponibles segons el teu rol
+
+### 4. Gestió d'Usuaris (Admin/Manager)
+- Clic a "Go to Users" per accedir a la gestió
+- Crear nous usuaris amb el botó "+ Add New User"
+- Editar usuaris existents amb el botó "Edit"
+- Eliminar usuaris amb el botó "Delete"
+
+### 5. Tancar Sessió
+Utilitza el botó "Logout" a la capçalera per tancar la sessió.
+
+## Conceptes Clau Implementats
+
+### 1. Autenticació JWT
+- Els tokens JWT s'emmagatzemen a `localStorage`
+- Els tokens expiren després d'1 hora
+- La validació es fa automàticament en cada petició
+
+### 2. Guards de Rutes
+- `authGuard`: Verifica que l'usuari està autenticat
+- `roleGuard`: Verifica que l'usuari té el rol necessari
+
+### 3. Interceptors HTTP
+- `jwtInterceptor`: Afegeix el token JWT a totes les peticions HTTP
+
+### 4. Control d'Accés Basat en Rols
+- Diferents nivells d'accés segons el rol de l'usuari
+- Menús i funcionalitats condicionals
+
+## Components Principals (Codi Original)
 
 ### app.ts
 
@@ -203,16 +357,24 @@ Els decoradors com `@Component` afegeixen metadades a les classes per configurar
 })
 ```
 
+
 ## Següents Passos
 
-Després d'entendre aquest exemple bàsic, pots explorar:
+Després d'entendre aquest projecte, pots explorar:
 
-1. **Afegir més components**: Crear components reutilitzables
-2. **Routing**: Implementar navegació entre pàgines
-3. **Services**: Compartir dades i lògica entre components
-4. **HTTP Client**: Fer peticions a APIs externes
-5. **Forms**: Crear formularis interactius
-6. **Directives**: Crear comportaments personalitzats
+1. **Integració amb Backend Real**: Substituir MockBackendService per peticions HTTP reals
+2. **Refresh Tokens**: Implementar mecanisme de renovació de tokens
+3. **Restabliment de Contrasenya**: Afegir funcionalitat de "forgot password"
+4. **Autenticació de Dos Factors**: Implementar 2FA per a major seguretat
+5. **Perfils d'Usuari**: Permetre als usuaris editar el seu perfil
+6. **Auditoria**: Registrar accions dels usuaris
+7. **Notificacions**: Sistema de notificacions en temps real
+8. **Internacionalització**: Suport per a múltiples idiomes
+
+## Documentació Addicional
+
+Per a més informació sobre el sistema d'autenticació i autorització, consulta:
+- [AUTHENTICATION.md](./AUTHENTICATION.md) - Documentació detallada del sistema d'autenticació
 
 ## Recursos Addicionals
 
@@ -221,12 +383,34 @@ Després d'entendre aquest exemple bàsic, pots explorar:
 - [Angular CLI Documentation](https://angular.dev/tools/cli)
 - [Guia d'estil d'Angular](https://angular.dev/style-guide)
 
+
 ## Tecnologies Utilitzades
 
 - **Angular 20.3**: Framework principal
 - **TypeScript**: Llenguatge de programació
+- **RxJS**: Programació reactiva
+- **@auth0/angular-jwt**: Gestió de tokens JWT
 - **Node.js**: Entorn d'execució
 - **npm**: Gestor de paquets
+
+## Seguretat
+
+### Bones Pràctiques Implementades
+- Tokens JWT amb expiració
+- Emmagatzematge segur de tokens
+- Validació de tokens en cada petició
+- Guards per protegir rutes
+- Control d'accés basat en rols
+
+### Recomanacions per a Producció
+- Utilitzar HTTPS obligatòriament
+- Implementar refresh tokens
+- Afegir CSRF protection
+- Configurar Content Security Policy
+- Implementar rate limiting
+- Utilitzar secrets forts per signar tokens
+- Monitoritzar intents de login fallits
+- Auditories de seguretat regulars
 
 ## Autor
 
